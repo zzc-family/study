@@ -56,3 +56,47 @@ interface IProps {
 *  2. 不同点： 接口只能定义对象类型，类型别名不仅可以定义对象类型也能定义基本类型
 * */
 
+// 接口继承
+interface IPoint2D {
+    x: number
+    y: number
+}
+interface IPoint3D extends IPoint2D{
+    z: number
+}
+
+// 元组 - 确定有多少个数据
+let originArr: [number, string] = [12, "123"];
+
+// 字面量类型
+let str2: "字面量" = "字面量";
+
+// typeof 类型上下文 - 根据已有值 获取变量值的类型
+let point = { x: 1, y: 2 };
+function getPoint(points: typeof point){}
+let x2: typeof point.x = 2;
+
+// TODO: 1. class继承
+class Animal {
+    move(){ console.log("move") }
+}
+class Dog extends Animal{
+    bark(){ console.log("汪") }
+}
+const dog = new Dog();
+console.log(dog.move());
+console.log(dog.bark());
+
+// TODO: 2. class类实现继承
+interface IGetProps {
+    x: number
+    y: number
+    name: string
+    say: () => void
+}
+class People implements IGetProps{
+    x = 1;
+    y = 2;
+    name = "123";
+    say = () => {}
+}
