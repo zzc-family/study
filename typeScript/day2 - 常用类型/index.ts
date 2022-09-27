@@ -100,3 +100,17 @@ class People implements IGetProps{
     name = "123";
     say = () => {}
 }
+
+// TODO: readonly - 只读，用来防止在构造函数之外对属性进行赋值
+class Personal {
+    readonly age: number = 15;
+    constructor(age: number){
+        this.age = age;
+    }
+}
+/*
+*   1. 修饰该属性是可读的，只能修饰属性不能修饰方法
+*   2. 属性 age 后面的类型注解( number )，如果不加，则 age 的类型为 18 (字面量类型)
+*   3. 接口或者 {} 表示的类型，也可以使用 readonly
+*
+* */
