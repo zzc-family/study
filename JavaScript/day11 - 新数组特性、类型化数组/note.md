@@ -186,3 +186,35 @@ a[1].name = "Bob";
 console.log(a[0].name); //Joe
 // 这里需要调用 fill（用undefined来填充数组）,因为 map 不会访问不存在的条目，而 Array(2) 创建了一个 length = 2 但没有条目的数组
 ```
+
+### Array.prototype.includes
+签名：result = theArray.includes(value[, start]);
+```
+const a = [NaN];
+console.log( a.indexOf(NaN) !== -1 ); // false
+console.log( a.includes(NaN) ); // true
+[-0].includes(0); //true
+```
+
+### Array.prototype.flat
+扁平化数组 
+```
+const original = [
+    [1, 2, 3],
+    4, 
+    5,
+    [6, 7, 8]
+]
+const flattened = original.flat();
+console.log(flattened); // [1, 2, 3, 4, 5, 6, 7, 8];
+```
+可设置一个可选的 depth 参数来指定 flat 进行递归扁平化的深度：1表示只有一层（默认）。无论结构有多深，都可使用 Infinity 来进行完全扁平化
+
+---
+### Array.prototype.flatMap
+执行扁平化之前，每个值都会通过一个映射函数，并且只扁平化一级
+```
+const original = [1, 2, 3, 4];
+const flattened = original.flatMap(e => e === 3 ? ["3a", "3b", "3c"] : e);
+console.log(flattened); // [1, 2, "3a", "3b", "3c", 4]
+```
