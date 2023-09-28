@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "description": "study new",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [],
   "author": "zzc-family",
   "license": "ISC",
   "devDependencies ": {
     "prettier": "^2.8.7"
+  },
+  "dependencies": {
+    "prettier": "^3.0.3"
   }
 }
