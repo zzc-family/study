@@ -269,3 +269,56 @@ console.log( regex.test("I love Regular Expression") );
 ```
 
 ### 相关案例
+
+#### 1. 字符串 trim 方法模拟
+
+trim 方法是去掉字符串的开头和结尾的空白符。有两种思路去做。
+
+- 匹配到开头和结尾的空白符，然后替换成空字符。如：
+
+```
+function trim(str) {
+    return str.replace(/^\s+|\s+$/g, "")
+}
+console.log(trim("   bar   "))
+```
+
+- 匹配整个字符串，然后用引用来提取出相应的数据：
+
+```
+function trim (str) {
+    return str.replace(/^\s*(.*?)\s*$/g, "$1");
+}
+console.log( trim(" foobar ") );
+// => "foobar"
+```
+
+这里使用了惰性匹配 \*?，不然也会匹配最后一个空格之前的所有空格的。
+当然，前者效率高。
+
+#### 2. 驼峰化
+
+```
+function camelize (str) {
+    return str.replace(/[-_\s]+(.)?/g, function (match, c) {
+        return c ? c.toUpperCase() : '';
+    });
+}
+console.log( camelize('-moz-transform') );
+// => "MozTransform"
+```
+
+其中分组 (.) 表示首字母。单词的界定是，前面的字符可以是多个连字符、下划线以及空白符。正则后面
+的 ? 的目的，是为了应对 str 尾部的字符可能不是单词字符，比如 str 是 '-moz-transform '。
+
+#### 3. 中划线化
+
+```
+function dasherize (str) {
+    return str.replace(/([A-Z])/g, "-$1").replace(/[-_\s]+/g, "-").toLowerCase();
+}
+console.log( dasherize('MozTransform') );
+// => "-moz-transform
+```
+
+#### 4. HTML 转义和反转义
