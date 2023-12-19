@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=, user-scalable=, initial-scale=, maximum-scale=, minimum-scale="
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=" />
+    <title></title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        background-color: #eee;
+        margin: 40px auto 10px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" height="800" width="800"></canvas>
+  </body>
+  <script src="./../../utils/tools.js"></script>
+  <script src="./../../utils/arrow.js"></script>
+  <script>
+    window.addEventListener("load", () => {
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      // 实例化一个箭头 其中心坐标为画布中心坐标
+      let arrow = new Arrow(canvas.width / 2, canvas.height / 2);
+
+      // 获取鼠标指针坐标
+      let mouse = tools.getMouse(canvas);
+
+      let speed = 1.5;
+      let angle = 0;
+
+      (function drawFrame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        let dx = mouse.x - canvas.width / 2;
+        let dy = mouse.y - canvas.height / 2;
+
+        // TODO: 使用Math.atan2计算出鼠标指针与箭头中心的夹角
+        arrow.angle = Math.atan2(dy, dx);
+
+        let vx = Math.cos(arrow.angle) * speed;
+        let vy = Math.sin(arrow.angle) * speed;
+        arrow.x += vx;
+        arrow.y += vy;
+        console.log(arrow.angle, "angle");
+        arrow.fill(ctx);
+        window.requestAnimationFrame(drawFrame, canvas);
+
+
+      })();
+    });
+  </script>
+</html>

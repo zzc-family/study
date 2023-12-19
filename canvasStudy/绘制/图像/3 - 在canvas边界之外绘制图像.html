@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      body {
+        background-color: rgba(100, 145, 250, 0.3);
+      }
+      #scaleSlider {
+        vertical-align: 10px;
+        width: 100px;
+        margin-left: 90px;
+      }
+      canvas {
+        margin: 10px 20px 0 20px;
+        border: thin solid #aaa;
+        cursor: crosshair;
+      }
+      #controls {
+        margin-left: 15px;
+        padding: 0;
+      }
+      #scaleOutput {
+        position: absolute;
+        width: 60px;
+        height: 30;
+        margin-left: 10px;
+        vertical-align: center;
+        text-align: center;
+        color: blue;
+        font: 18px Arial;
+        text-shadow: 2px 2px 4px rgba(100, 140, 250, 0.8);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="controls">
+      <output id="scaleOutput">1.0</output>
+      <input
+        type="range"
+        id="scaleSlider"
+        min="1"
+        max="3.0"
+        step=".01"
+        value="1.0"
+      />
+    </div>
+    <canvas id="canvas" width="800" height="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    let image = new Image();
+    const scaleSlider = document.getElementById("scaleSlider");
+    const scaleOutput = document.getElementById("scaleOutput");
+    let scale = 1.0;
+    let MINIMUM_SCALE = 1.0;
+    let MAXIMUM_SCALE = 3.0;
+
+    function drawScaled() {
+      let w = canvas.width;
+      let h = canvas.height;
+      let sw = w * scale;
+      let sh = h * scale;
+
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+      drawWatermark();
+
+      context.drawImage(
+        canvas,
+        0,
+        0,
+        canvas.width,
+        canvas.height,
+        w / 2 - sw / 2,
+        h / 2 - sh / 2,
+        sw,
+        sh
+      );
+    }
+
+    function drawScaleText(value) {
+      let text = parseFloat(value).toFixed(2);
+      let percent =
+        parseFloat(value - MINIMUM_SCALE) /
+        parseFloat(MAXIMUM_SCALE - MINIMUM_SCALE);
+      scaleOutput.innerText = text;
+      percent = percent < 0.35 ? 0.35 : percent;
+      scaleOutput.style.fontSize = (percent * MAXIMUM_SCALE) / 1.5 + "em";
+    }
+
+    function drawWatermark() {
+      let lineOne = "Copyright";
+      let lineTwo = "Acme Inc";
+      let textMetrics;
+      let FONT_HEIGHT = 128;
+
+      context.save();
+      context.font = FONT_HEIGHT + "px Arial";
+      textMetrics = context.measureText(lineOne);
+      context.globalAlpha = 0.6;
+      context.translate(canvas.width / 2, canvas.height / 2 - FONT_HEIGHT / 2);
+      context.fillText(lineOne, -textMetrics.width / 2, 0);
+      textMetrics = context.measureText(lineTwo);
+      context.fillText(lineTwo, -textMetrics.width / 2, FONT_HEIGHT);
+      context.strokeText(lineTwo, -textMetrics.width / 2, FONT_HEIGHT);
+      context.restore();
+    }
+    function drawImage() {
+      let w = canvas.width;
+      let h = canvas.height;
+      let sw = w * scale;
+      let sh = h * scale;
+
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(image, -sw / 2 + w / 2, -sh / 2 + h / 2, sw, sh);
+    }
+
+    scaleSlider.onchange = (e) => {
+      scale = e.target.value;
+      if (scale < MINIMUM_SCALE) scale = MINIMUM_SCALE;
+      else if (scale > MAXIMUM_SCALE) scale = MAXIMUM_SCALE;
+
+      drawScaleText(scale);
+      drawScaled();
+    };
+
+    context.fillStyle = "cornflowerblue";
+    context.strokeStyle = "yellow";
+    context.shadowColor = "rgba(50, 50, 50, 1.0)";
+    context.shadowOffsetX = 5;
+    context.shadowOffsetY = 5;
+    context.shadowBlur = 10;
+
+    let glassSize = 150;
+    image.src =
+      "https://img1.baidu.com/it/u=1450101983,907140033&fm=26&fmt=auto";
+
+    image.onload = (e) => {
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      drawWatermark();
+      drawScaleText(scaleSlider.value);
+    };
+  </script>
+</html>

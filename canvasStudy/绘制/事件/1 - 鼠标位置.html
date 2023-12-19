@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=, user-scalable=, initial-scale=, maximum-scale=, minimum-scale="
+      name="viewport"
+    />
+    <meta content="ie=" http-equiv="X-UA-Compatible" />
+    <title></title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      canvas {
+        background-color: #eee;
+        margin: 40px auto 10px;
+        display: block;
+      }
+      p {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas height="800" id="canvas" width="800"></canvas>
+    <p id="txt"></p>
+  </body>
+  <script src="./../../utils/tools.js"></script>
+  <script>
+    window.addEventListener("load", () => {
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      let txt = document.getElementById("txt");
+      let mouse = window.tools.getMouse(canvas);
+      canvas.addEventListener("mousemove", () => {
+        txt.innerText = `鼠标指针坐标:( ${mouse.x},${mouse.y})`;
+      });
+    });
+  </script>
+</html>

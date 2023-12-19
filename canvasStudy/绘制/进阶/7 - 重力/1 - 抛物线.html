@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=, user-scalable=, initial-scale=, maximum-scale=, minimum-scale="
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=" />
+    <title></title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        background-color: #eee;
+        margin: 40px auto 10px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+  <h2>抛物线：小球在x轴做匀速，在y轴做减加速运动</h2>
+    <canvas id="canvas" height="800" width="800"></canvas>
+  </body>
+  <script src='./../../../utils/tools.js'></script>
+  <script src='./../../../utils/ball.js'></script>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const ball = new Ball(0, canvas.height);
+    let vx = 4;
+    let vy = -5;
+    let gravity = .2;
+
+    (function drawFrame(){
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ball.x += vx;
+      ball.y += vy;
+      ball.fill(ctx);
+
+      vy += gravity;
+      window.requestAnimationFrame(drawFrame);
+
+    })()
+  </script>
+</html>

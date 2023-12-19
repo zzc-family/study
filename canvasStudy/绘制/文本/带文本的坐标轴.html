@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      body {
+        padding: 20px;
+      }
+      canvas {
+        background-color: #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" height="1200" width="1800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    const canvasWidth = context.canvas.width;
+    const canvasHeight = context.canvas.height;
+    let a = 0;
+
+    //  y轴的绘制
+    for (let i = 0; i < canvasWidth; i += 10) {
+      context.beginPath();
+      context.moveTo(i + 0.5 + 20, canvasHeight - 20);
+      context.lineTo(i + 0.5 + 20, canvasHeight - (a % 5 === 0 ? 40 : 30));
+      if (a % 5 === 0 && a !== 0) {
+        context.strokeText(i + "", i + 0.5 + 20, canvasHeight - 14);
+      }
+      a === 0 && context.strokeText(i + "", i + 0.5 + 20, canvasHeight - 6);
+
+      context.textBaseline = "top";
+      context.textAlign = "center";
+      context.stroke();
+      a += 1;
+    }
+    for (let i = 0; i < canvasHeight; i += 10) {
+      a += 1;
+      context.beginPath();
+      context.moveTo(20, canvasHeight - i - 20);
+      context.lineTo(a % 5 === 0 ? 40 : 30, canvasHeight - i - 20);
+      if (a % 5 === 0 && a !== 0) {
+        context.strokeText(i + "", 20, canvasHeight - i - 20);
+      }
+      context.textBaseline = "middle";
+      context.textAlign = "right";
+      context.stroke();
+    }
+    context.beginPath();
+    context.moveTo(20 + 0.5, 0.5);
+    context.lineTo(20 + 0.5, canvasHeight + 0.5 - 20);
+    context.lineTo(canvasWidth + 0.5, canvasHeight + 0.5 - 20);
+    context.stroke();
+  </script>
+</html>

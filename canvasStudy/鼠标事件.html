@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      #box {
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+      }
+      canvas {
+        margin: auto;
+        background-color: #f5f5f5;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box">
+      <canvas width="600" height="600"></canvas>
+    </div>
+    <script>
+      const canvas = document.getElementsByTagName("canvas")[0];
+      const context = canvas.getContext("2d");
+      function windowToCanvas(x, y) {
+        const bbox = canvas.getBoundingClientRect();
+        console.log(
+          "bbox的width:" + bbox.width + "\n",
+          "canvas的width:" + canvas.width + "\n",
+          "clientX: " + x + "\n",
+          "left: " + bbox.left
+        );
+        return {
+          x: x - bbox.left * (canvas.width / bbox.width),
+          y: y - bbox.top * (canvas.height / bbox.height),
+        };
+      }
+      canvas.onmousemove = (e) => {
+        var loc = windowToCanvas(e.clientX, e.clientY);
+      };
+    </script>
+  </body>
+</html>

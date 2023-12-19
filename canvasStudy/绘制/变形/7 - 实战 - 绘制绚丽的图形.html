@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="" />
+    <meta
+      name="viewport"
+      content="width=, user-scalable=, initial-scale=, maximum-scale=, minimum-scale="
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=" />
+    <title></title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        background-color: #eee;
+        margin: 40px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" height="80" width="200"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "rgba(255, 0, 0, .25)";
+
+    ctx.translate(150, 0);
+    ctx.fillRect(0, 0, 100, 50);
+
+    for (let i = 0; i < 500; i++) {
+      ctx.translate(25, 25);
+      ctx.scale(0.95, 0.95);
+      ctx.rotate(Math.PI / 10);
+      ctx.fillRect(0, 0, 100, 50);
+    }
+  </script>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      body {
+        width: 100vw;
+        height: 100vh;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+  </body>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    canvas.width = document.getElementsByTagName("body")[0].offsetWidth;
+    canvas.height = document.getElementsByTagName("body")[0].offsetHeight;
+    const column = 4;
+    let handleMove = 0;
+
+    function r(num) {
+      return Math.random() * num;
+    }
+    let offsetY = 10;
+    var EventUtil = {
+      addHandler: function (element, type, handler) {
+        if (element.addEventListener)
+          element.addEventListener(type, handler, false);
+        else if (element.attachEvent) element.attachEvent("on" + type, handler);
+        else element["on" + type] = handler;
+      },
+      removeHandler: function (element, type, handler) {
+        if (element.removeEventListener)
+          element.removeEventListener(type, handler, false);
+        else if (element.detachEvent) element.detachEvent("on" + type, handler);
+        else element["on" + type] = handler;
+      },
+      /**
+       * 监听触摸的方向
+       * @param target            要绑定监听的目标元素
+       * @param isPreventDefault  是否屏蔽掉触摸滑动的默认行为（例如页面的上下滚动，缩放等）
+       * @param rightCallback     向右滑动的监听回调（若不关心，可以不传，或传false）
+       * @param leftCallback      向左滑动的监听回调（若不关心，可以不传，或传false）
+       */
+      listenTouchDirection: function (
+        target,
+        isPreventDefault,
+        rightCallback,
+        leftCallback
+      ) {
+        this.addHandler(target, "touchstart", handleTouchEvent);
+        this.addHandler(target, "touchend", handleTouchEvent);
+        this.addHandler(target, "touchmove", handleTouchEvent);
+        var startX;
+        var startY;
+        function handleTouchEvent(event) {
+          switch (event.type) {
+            case "touchstart":
+              startX = event.touches[0].pageX;
+              startY = event.touches[0].pageY;
+              break;
+            case "touchend":
+              var spanX = event.changedTouches[0].pageX - startX;
+              handleMove = spanX;
+              if (spanX > 0) {
+                //向右
+                rightCallback && rightCallback();
+              } else {
+                //向左
+                if (leftCallback) leftCallback();
+              }
+
+              break;
+            case "touchmove":
+              //阻止默认行为
+              if (isPreventDefault) event.preventDefault();
+              break;
+          }
+        }
+      },
+    };
+    function drawRoundedRect(x, y, width, height, r = 10, color = "#000") {
+      context.save();
+      context.beginPath();
+      context.storkeStyle = color;
+      context.moveTo(x + r, y);
+      context.lineTo(x + width - r, y);
+      context.arc(
+        x + width - r,
+        y + r,
+        r,
+        Math.PI * (3 / 2),
+        Math.PI * 2,
+        false
+      );
+      context.lineTo(x + width, y + height - r);
+      context.arc(
+        x + width - r,
+        y + height - r,
+        r,
+        0,
+        Math.PI * (1 / 2),
+        false
+      );
+      context.lineTo(x + r, y + height);
+      context.arc(x + r, y + height - r, r, Math.PI * (1 / 2), Math.PI, false);
+      context.lineTo(x, y + r);
+      context.arc(x + r, y + r, r, Math.PI, Math.PI * (3 / 2), false);
+      context.stroke();
+      context.restore();
+    }
+    class Ball {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.r = canvas.width / column / 2 - 10;
+        this.offsetY = r(2) + 0.5;
+      }
+      drawCircle() {
+        context.beginPath();
+        context.fillStyle = `rgba(${r(255)},${r(255)},${r(255)})`;
+        context.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
+        context.fill();
+      }
+    }
+
+    let arr = [];
+    for (let i = 0; i < column; i++) {
+      const columnWidth = canvas.width / column;
+      const centerX = columnWidth / 2 + i * columnWidth;
+      arr.push(new Ball(centerX, 100));
+    }
+
+    function draw() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      drawRoundedRect(
+        canvas.width / 2 - canvas.width * 0.2 + handleMove,
+        canvas.height * 0.8,
+        canvas.width * 0.2,
+        canvas.height * 0.1
+      );
+      for (let i = 0; i < arr.length; i++) {
+        const arrElement = arr[i];
+        arrElement.y += arrElement.offsetY;
+        arrElement.drawCircle();
+      }
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+
+    EventUtil.listenTouchDirection(
+      canvas,
+      true,
+      () => console.log("左移动"),
+      () => console.log("右移动")
+    );
+  </script>
+</html>

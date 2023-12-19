@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=" />
+    <title></title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        background-color: #eee;
+        margin: 40px auto 10px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" height="800" width="800"></canvas>
+  </body>
+  <script src="./../utils/tools.js"></script>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    function Barrage(ctx, text) {
+      this.text = "弹幕组件";
+      this.x = canvas.width / 2;
+      this.y = 10;
+      this.speed = -1;
+      this.w = this.text.length * ctx.measureText("幕").width * 2  || 0;
+      this.rectW = 0;
+      this.distance = 20;
+      this.h =  ctx.measureText("幕").width * 2 || 0;
+      this.fillText = function () {
+        ctx.beginPath();
+        ctx.font = "20px 微软雅黑";
+        let w = ctx.measureText("幕").width;
+        this.x += this.speed;
+        this.w = w;
+        this.rectW = w * this.text.length + 20;
+        ctx.fillText(this.text, this.x  + 10, this.y + 22 );
+        ctx.fill();
+        tools.drawRoundedRect(ctx, this.x, this.y, this.rectW, w + 10);
+      };
+
+    }
+
+    let barrageArr =  [];
+    for(let i = 0; i < 10; i++ ){
+      const barrage = new Barrage(ctx);
+      barrageArr.push(barrage);
+    }
+
+
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for(let j = 0; j < barrageArr.length; j++ ){
+        const barrage = barrageArr[j];
+        barrage.fillText(j * ball)
+      }
+
+      // tools.drawRoundedRect(ctx, barrage.x, barrage.y, barrage.w, barrage.h);
+      window.requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+</html>

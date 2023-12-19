@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" height="800" width="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    let image = new Image();
+    let gradient = context.createLinearGradient(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+    let text = "Canvas";
+    let pattern;
+    function drawGradientText() {
+      context.fillStyle = gradient;
+      context.fillText(text, 65, 200);
+      context.strokeText(text, 65, 200);
+    }
+    function drawPatternText() {
+      context.fillStyle = pattern;
+      context.fillText(text, 65, 450);
+      context.strokeText(text, 65, 450);
+    }
+    image.onload = (e) => {
+      pattern = context.createPattern(image, "repeat");
+      drawPatternText();
+    };
+    image.src =
+      "https://himg.bdimg.com/sys/portraitn/item/198cd0a1d0a1c9d9c4eab1a8e4f5";
+    context.font = "256px Palatino";
+    context.strokeStyle = "cornflowerblue";
+    context.shadowColor = "rgba(100, 100, 150, .8)";
+    context.shadowOffsetX = 5;
+    context.shadowBlurY = 5;
+    context.shadowBlur = 10;
+
+    gradient.addColorStop(0, "blue");
+    gradient.addColorStop(0.25, "blue");
+    gradient.addColorStop(0.5, "white");
+    gradient.addColorStop(0.75, "red");
+    gradient.addColorStop(1, "yellow");
+    drawGradientText();
+  </script>
+</html>

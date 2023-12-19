@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=, user-scalable=, initial-scale=, maximum-scale=, minimum-scale="
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=" />
+    <title></title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        background-color: #eee;
+        margin: 40px auto 10px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" height="800" width="800"></canvas>
+  </body>
+  <script src='./../../../utils/tools.js'></script>
+  <script src='./../../../utils/ball.js'></script>
+  <script>
+    window.addEventListener("load", () => {
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      const ball = new Ball(0, canvas.height)
+      let vx = 3;
+      let vy = -6;
+      let gravity = .2;
+      let bounce = -.75;
+
+      (function drawFrame(){
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ball.x += vx;
+          ball.y += vy;
+
+          if(ball.y + ball.radius > canvas.height){
+            ball.y = canvas.height - ball.radius;
+            vy = vy * bounce;
+          }
+
+          ball.fill(ctx);
+
+          vy += gravity;
+
+        window.requestAnimationFrame(drawFrame)
+      })()
+    })
+
+  </script>
+</html>

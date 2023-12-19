@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        margin: 40px auto;
+        border: 2px solid #f00;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    createPolygon(context, 3, 100, 75, 50);
+    context.fillStyle = "#f00";
+    context.fill();
+
+    function createPolygon(ctx, n, dx, dy, size) {
+      ctx.beginPath();
+
+      let degree = (2 * Math.PI) / n;
+      for (let i = 0; i < n; i++) {
+        let x = Math.cos(i * degree);
+        let y = Math.sin(i * degree);
+        console.log(
+          "x: ",
+          x + "\n",
+          "y: ",
+          y + "\n",
+          "i: ",
+          i + "\n",
+          "y: ",
+          y
+        );
+        ctx.lineTo(x * size + dx, y * size + dy);
+      }
+
+      ctx.closePath();
+    }
+  </script>
+</html>

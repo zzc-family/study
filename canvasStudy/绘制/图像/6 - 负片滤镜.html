@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="negativeButton">负片滤镜</button>
+    <canvas id="canvas" width="800" height="400"></canvas>
+  </body>
+  <script>
+    const image = new Image();
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    const negativeButton = document.getElementById("negativeButton");
+
+    negativeButton.addEventListener("click", () => {
+      let imagedata = context.getImageData(0, 0, canvas.width, canvas.height);
+      let data = imagedata.data;
+      console.log(data, "Data");
+      for (let i = 0; i <= data.length - 4; i += 4) {
+        data[i] = 255 - data[i];
+        data[i + 1] = 255 - data[i + 1];
+        data[i + 2] = 255 - data[i + 2];
+      }
+      context.putImageData(imagedata, 0, 0);
+    });
+
+    image.src = "./../../images/bg.webp";
+    image.onload = () => {
+      context.drawImage(
+        image,
+        0,
+        0,
+        image.width,
+        image.height,
+        0,
+        0,
+        context.canvas.width,
+        context.canvas.height
+      );
+    };
+  </script>
+</html>

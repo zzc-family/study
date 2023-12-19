@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+      }
+      canvas {
+        margin: auto;
+        background-color: #f5f5f5;
+        border: 2px solid #f00;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    canvas.width = document.getElementsByTagName("body")[0].offsetWidth;
+    canvas.height = document.getElementsByTagName("body")[0].offsetHeight;
+    const r = 30;
+    const color = "Blue";
+    const x = 180;
+    const y = 750;
+    const distance = 10;
+    let offsetX = 10;
+    let offsetY = 10;
+    function randomColor() {
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      return "rgb(" + r + "," + g + "," + b + ")";
+    }
+    function drawLine(x1, y1, x2, y2, color = "#000") {
+      context.beginPath();
+      context.moveTo(x1, y1);
+      context.moveTo(x2, y);
+    }
+    function Ball() {
+      this.r = Math.floor(Math.random() * 50 + 10);
+      this.x = Math.floor(Math.random() * (canvas.width - 70) + 70);
+      this.y = Math.floor(Math.random() * (canvas.height - 70) + 70);
+      this.offsetX = -offsetX;
+      this.offsetY = offsetY;
+      console.log(this.x, this.y);
+      this.color = randomColor();
+    }
+    Ball.prototype.drawBall = function (centerArr) {
+      // context.clearRect(0, 0, canvas.width, canvas.height);
+      this.update();
+
+      context.beginPath();
+      context.arc(this.x, this.y, this.r, 0, Math.PI * 2, true);
+      context.fillStyle = this.color;
+      context.fill();
+    };
+    Ball.prototype.update = function () {
+      if (this.x + this.r >= canvas.width || this.x <= this.r) {
+        this.offsetX = -this.offsetX;
+      }
+      if (this.y + this.r >= canvas.height || this.y <= this.r) {
+        this.offsetY = -this.offsetY;
+      }
+      this.x += this.offsetX;
+      this.y += this.offsetY;
+    };
+    Ball.prototype.drawCenterLine = function (x, y, color) {
+      context.beginPath();
+      context.strokeStyle = color || this.color || "#f00";
+      context.moveTo(this.x, this.y);
+      context.lineTo(x, y);
+      context.stroke();
+    };
+    Ball.prototype.drawText = function (text) {
+      context.fillStyle = this.color;
+      context.font = "40px 微软雅黑";
+      context.textAlign = "start";
+      context.textBaseline = "middle";
+      context.fillText(text, this.x + this.r, this.y);
+      context.fill();
+    };
+    let ballArr = [];
+    let centerArr = [];
+    for (let i = 0; i < 5; i++) {
+      let ball = new Ball();
+      centerArr.push({
+        x: ball.x,
+        y: ball.y,
+      });
+      ballArr.push(ball);
+    }
+    setInterval(() => {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < ballArr.length; i++) {
+        let ballItem = ballArr[i];
+        ballItem.drawBall();
+        ballItem.drawText("123");
+        for (let j = 0; j < i; j++) {
+          ballItem.drawCenterLine(ballArr[j].x, ballArr[j].y);
+        }
+      }
+    }, 100);
+  </script>
+</html>

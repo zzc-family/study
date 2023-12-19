@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <label for="drawInColorToggleCheckbox">
+      <input id="drawInColorToggleCheckbox" type="checkbox" checked />
+      正常
+    </label>
+    <canvas id="canvas" width="800" height="400"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    const image = new Image();
+    const drawInColorToggleCheckbox = document.getElementById(
+      "drawInColorToggleCheckbox"
+    );
+
+    function drawInBlackAndWhite() {
+      let data = undefined;
+      let i = 0;
+      let imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+      data = imageData.data;
+
+      for (i = 0; i < data.length - 4; i += 4) {
+        let average = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        data[i] = average;
+        data[i + 1] = average;
+        data[i + 2] = average;
+      }
+      context.putImageData(imageData, 0, 0);
+    }
+
+    function drawInColor() {
+      context.drawImage(
+        image,
+        0,
+        0,
+        image.width,
+        image.height,
+        0,
+        0,
+        context.canvas.width,
+        context.canvas.height
+      );
+    }
+
+    drawInColorToggleCheckbox.onclick = function () {
+      if (this.checked) {
+        drawInColor();
+      } else {
+        drawInBlackAndWhite();
+      }
+    };
+
+    image.src = "./../../images/bg.webp";
+    image.onload = () => {
+      drawInColor();
+    };
+  </script>
+</html>

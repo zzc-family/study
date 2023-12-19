@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=, user-scalable=, initial-scale=, maximum-scale=, minimum-scale="
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=" />
+    <title></title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        background-color: #eee;
+        margin: 40px auto 10px;
+        display: block;
+      }
+      p {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" height="800" width="800"></canvas>
+    <p><button id="btn">保存图片</button></p>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const $ = (id) => document.getElementById(id) || "";
+
+    let text = "坚毅的望着前路";
+    ctx.font = "bold 60px 微软雅黑";
+
+    ctx.shadowOffsetX = 5;
+    ctx.shadowOffsetY = 5;
+    ctx.shadowColor = "#6cf";
+    ctx.shadowBlur = 10;
+
+    ctx.fillStyle = "#f69";
+    ctx.fillText(text, 10, 90);
+
+    $("btn").onclick = function () {
+      window.location.href = canvas
+        .toDataURL("image/png")
+        .replace("image/png", "image/octet-stream");
+    };
+  </script>
+</html>

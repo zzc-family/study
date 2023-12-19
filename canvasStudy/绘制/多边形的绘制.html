@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+      canvas {
+        background-color: #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    const MARGIN = 20;
+    const R = canvas.width / 2;
+
+    context.beginPath();
+    context.moveTo(R * 2, R);
+    context.strokeStyle = "green";
+    context.lineTo(
+      R + R * Math.cos(45 * (Math.PI / 180)),
+      R - R * Math.sin(45 * (Math.PI / 180))
+    );
+    context.lineTo(R, 0);
+    context.lineTo(
+      R - R * Math.cos(45 * (Math.PI / 180)),
+      R - R * Math.sin(45 * (Math.PI / 180))
+    );
+    context.lineTo(0, R);
+    context.lineTo(
+      R - R * Math.cos(45 * (Math.PI / 180)),
+      R + R * Math.sin(45 * (Math.PI / 180))
+    );
+    context.lineTo(R, R * 2);
+    context.lineTo(
+      R + R * Math.cos(45 * (Math.PI / 180)),
+      R + R * Math.sin(45 * (Math.PI / 180))
+    );
+    context.lineTo(R * 2, R);
+    context.stroke();
+
+    context.beginPath();
+    context.strokeStyle = "purple";
+    context.arc(R, R, 1, 0, Math.PI * 2, false);
+    context.stroke();
+
+    context.beginPath();
+    context.arc(R, R, R, 0, Math.PI * 2, false);
+    context.stroke();
+    //
+    // context.beginPath();
+    // context.lineWidth = 2;
+    // context.strokeStyle = "blue";
+    // context.moveTo(R, R);
+    // context.lineTo(
+    //   R + R * Math.cos(45 * (Math.PI / 180)),
+    //   R - R * Math.sin(45 * (Math.PI / 180))
+    // );
+    // context.lineTo(R + R * Math.cos(45 * (Math.PI / 180)), R);
+    // context.stroke();
+
+    // context.beginPath();
+    // context.strokeStyle = "red";
+    // context.moveTo(R, 0);
+    // context.lineTo(R, R);
+    // context.lineTo(R * 2, R);
+    // context.stroke();
+  </script>
+</html>

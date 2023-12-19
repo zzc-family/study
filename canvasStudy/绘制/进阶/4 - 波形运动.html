@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang=''>
+
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=, user-scalable=, initial-scale=, maximum-scale=, minimum-scale='>
+  <meta http-equiv='X-UA-Compatible' content='ie='>
+  <title></title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0
+    }
+
+    canvas {
+      background-color: #eee;
+      margin: 40px auto 10px;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id='canvas' height='800' width='800'></canvas>
+</body>
+<script src="./../../utils/ball.js"></script>
+<script src="./../../utils/tools.js"></script>
+<script>
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+
+  // 1. 作用于x轴
+  let ballX = new Ball(canvas.width / 2, canvas.height / 2);
+
+  // 2. 作用与y轴
+  let ballY = new Ball(0, 60);
+
+  // 3. 脉冲
+  let ball = new Ball(canvas.width / 2, 100 / 2, 25);
+  let rangle1 = .5;
+
+  let angle = 0;
+  let rangle = 80;
+
+  (function frame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    ballX.x = canvas.width / 2 + Math.sin(angle) * rangle;
+    ballX.fill(ctx);
+
+    ballY.x += 1;
+    ballY.y = canvas.height / 2 + Math.sin(angle) * rangle;
+    ballY.fill(ctx);
+
+    ball.scaleX = 1 + Math.sin(angle) * rangle1;
+    ball.scaleY = 1 + Math.sin(angle) * rangle1;
+    ball.fill(ctx)
+
+    angle += .05;
+
+    window.requestAnimationFrame(frame)
+  })()
+</script>
+
+</html>

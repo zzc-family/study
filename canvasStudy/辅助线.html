@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+      canvas {
+        background-color: #f5f5f5;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="300" height="300"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    function windowToCanvas(e) {
+      var bbox = canvas.getBoundingClientRect();
+      const { clientX: x, clientY: y } = e;
+      return {
+        x: x - bbox.left * (canvas.width / bbox.width),
+        y: y - bbox.top * (canvas.height / bbox.height),
+      };
+    }
+    function saveDrawingSurface() {
+      drawingSurfaceImageData = context.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+    }
+    function restoreDrawingSurface() {
+      context.putImageData(drawingSurfaceImageData, 0, 0);
+    }
+    canvas.onmousedown = function (e) {
+      saveDrawingSurface();
+    };
+    canvas.onmousemove = function (e) {
+      var loc = windowToCanvas(e);
+      if (dragging) {
+        restoreDrawingSurface();
+        if (guidewires) {
+          drawGuidewires(mousedown.x, mousedown.y);
+        }
+      }
+    };
+    canvas.onmouseup = function (e) {
+      restoreDrawingSurface();
+    };
+  </script>
+</html>

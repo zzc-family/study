@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      canvas {
+        background-color: #eee;
+        border: thin solid cornflowerblue;
+      }
+      #radios {
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="radios">
+      <input type="radio" id="repeatRadio" name="patternRadio" />repeat
+      <input type="radio" id="repeatXRadio" name="patternRadio" />repeat-x
+      <input type="radio" id="repeatYRadio" name="patternRadio" />repeat-y
+      <input type="radio" id="noRepeatRadio" name="patternRadio" />no repeat
+    </div>
+    <canvas id="canvas" width="800" height="800"></canvas>
+  </body>
+  <script>
+    function $(id) {
+      return document.getElementById(id);
+    }
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    const image = new Image();
+    function fillCanvasWithPattern(repeatString) {
+      const pattern = context.createPattern(image, repeatString);
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.fillStyle = pattern;
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.fill();
+    }
+
+    $("repeatRadio").onclick = function (e) {
+      fillCanvasWithPattern("repeat");
+    };
+    $("repeatXRadio").onclick = () => {
+      fillCanvasWithPattern("repeat-x");
+    };
+    $("repeatYRadio").onclick = function (e) {
+      fillCanvasWithPattern("repeat-y");
+    };
+    $("noRepeatRadio").onclick = function (e) {
+      fillCanvasWithPattern("no-repeat");
+    };
+    image.src =
+      "https://lf3-static.bytednsdoc.com/obj/eden-cn/323352eh7nulojpogvhog/people_03.png";
+    image.onload = () => {
+      fillCanvasWithPattern("repeat");
+    };
+  </script>
+</html>

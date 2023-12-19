@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        margin: 40px auto;
+        border: 2px solid #f00;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    // 1. 调色板样式一
+    /*for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 6; j++) {
+        context.fillStyle =
+          "rgb(" +
+          Math.floor(255 - 42.5 * i) +
+          "," +
+          Math.floor(255 - 42.5 * j) +
+          ", 0)";
+        context.fillRect(j * 25, i * 25, 25, 25);
+      }
+    }*/
+
+    // 2. 调色板样式二
+    let r = 255,
+      g = 0,
+      b = 0;
+    for (let i = 0; i < 150; i++) {
+      if (i < 25) {
+        g += 10;
+      } else if (i > 25 && i < 50) {
+        r -= 10;
+      } else if (i > 50 && i < 75) {
+        g -= 10;
+        b += 10;
+      } else if (i >= 75 && i < 100) {
+        r += 10;
+      } else {
+        b -= 10;
+      }
+      context.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
+      context.fillRect(3 * i, 0, 3, canvas.height);
+    }
+  </script>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    const fillStyle = "cornflowerblue";
+    context.strokeStyle = "yellow";
+    context.shadowColor = "rgba(50, 50, 50, 1)";
+    context.shadowOffsetX = 2;
+    context.shadowOffsetY = 2;
+    context.shadowBlur = 4;
+
+    context.lineWidth = 20;
+    context.lineCap = "round";
+
+    context.beginPath();
+    context.moveTo(120.5, 130);
+    context.quadraticCurveTo(150.8, 130, 160.5, 150.5);
+    context.quadraticCurveTo(190, 250, 210.5, 160.5);
+    context.quadraticCurveTo(240, 100.5, 290, 70.5);
+    context.stroke();
+    context.lineWidth = 1;
+    context.strokeStyle = "#000";
+    context.beginPath();
+    context.moveTo(120.5, 130);
+    context.lineTo(150.8, 130);
+    context.lineTo(160.5, 150.5);
+
+    context.stroke();
+
+    context.beginPath();
+    context.strokeStyle = "blue";
+    context.moveTo(0, 130);
+    context.lineTo(150.8, 130);
+    context.lineTo(150.8, canvas.height);
+    context.stroke();
+
+    context.beginPath();
+    context.strokeStyle = "red";
+    context.moveTo(0, 150.5);
+    context.lineTo(160.5, 150.5);
+    context.lineTo(160.5, canvas.height);
+    context.stroke();
+  </script>
+</html>

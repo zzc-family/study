@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      body {
+        background: #ddd;
+      }
+      .floatingControls {
+        position: absolute;
+        left: 175px;
+        top: 300px;
+      }
+      #canvas {
+        background: #fff;
+        border: thin solid #aaa;
+      }
+      #video {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <video id="video" controls src="./../../images/video1.mp4"></video>
+    <canvas id="canvas" width="480" height="270"></canvas>
+    <div id="controls" class="floatingControls">
+      <input type="button" value="Play" id="controlButton" />
+      <input type="checkbox" id="colorCheckbox" />color
+      <input type="checkbox" id="flipCheckbox" />Flip
+    </div>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const offscreenCanvas = document.createElement("canvas");
+    const offscreenContext = offscreenCanvas.getContext("2d");
+    const context = canvas.getContext("2d");
+    const video = document.getElementById("video");
+    const controlButton = document.getElementById("controlButton");
+    const flipCheckbox = document.getElementById("flipCheckbox");
+    const colorCheckbox = document.getElementById("colorCheckbox");
+    let imageData;
+    let poster = new Image();
+
+    function removeColor() {
+      let data, width, average;
+      imageData = offscreenContext.getImageData(
+        0,
+        0,
+        offscreenCanvas.width,
+        offscreenCanvas.height
+      );
+      data = imageData.data;
+      width = data.width;
+
+      for (i = 0; i < data.length - 4; i += 4) {
+        average = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        data[i] = average;
+        data[i + 1] = average;
+        data[i + 2] = average;
+      }
+
+      offscreenContext.putImageData(imageData, 0, 0);
+    }
+
+    function drawFlipped() {
+      context.save();
+      context.translate(canvas.width / 2, canvas.height / 2);
+      context.rotate(Math.PI);
+      context.translate(-canvas.width / 2, -canvas.height / 2);
+      context.drawImage(offscreenCanvas, 0, 0);
+
+      context.restore();
+    }
+    function nextVideoFrame() {
+      if (video.ended) {
+        controlButton.value = "Play";
+      } else {
+        offscreenContext.drawImage(video, 0, 0);
+        if (!colorCheckbox.checked) {
+          removeColor();
+        }
+        if (flipCheckbox.checked) {
+          drawFlipped();
+        } else {
+          context.drawImage(offscreenCanvas, 0, 0);
+        }
+        requestAnimationFrame(nextVideoFrame);
+      }
+    }
+
+    function startPlaying() {
+      requestAnimationFrame(nextVideoFrame);
+      video.play();
+    }
+
+    function stopPlaying() {
+      video.pause();
+    }
+
+    controlButton.onclick = (e) => {
+      if (controlButton.value === "Play") {
+        startPlaying();
+        controlButton.value = "Pause";
+      } else {
+        stopPlaying();
+        controlButton.value = "Play";
+      }
+    };
+
+    poster.onload = function () {
+      context.drawImage(poster, 0, 0);
+    };
+
+    poster.src = "./../../images/bg.webp";
+
+    offscreenCanvas.width = canvas.width;
+    offscreenCanvas.height = canvas.height;
+  </script>
+</html>

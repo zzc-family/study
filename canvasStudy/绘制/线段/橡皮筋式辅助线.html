@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      canvas {
+        background-color: #f5f5f5;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="1200" height="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    let mousedown = {
+      x: 0,
+      y: 0,
+    };
+    let isClick = false;
+    const rubberbandRect = {};
+    function windowToCanvas(x, y) {
+      let bbox = canvas.getBoundingClientRect();
+      return {
+        x: x - bbox.left * (canvas.width / bbox.width),
+        y: y - bbox.top * (canvas.height / bbox.height),
+      };
+    }
+    function updateRubberbandRectangle(loc) {
+      rubberbandRect.width = Math.abs(loc.x - mousedown.x);
+      rubberbandRect.height = Math.abs(loc.y - mousedown.y);
+
+      if (loc.x > mousedown.x) {
+        rubberbandRect.left = mousedown.x;
+      } else {
+        rubberbandRect.left = loc.x;
+      }
+
+      if (loc.y > mousedown.y) {
+        rubberbandRect.top = mousedown.y;
+      } else {
+        rubberbandRect.top = loc.y;
+      }
+    }
+    function drawRubberbandShape(loc) {
+      let angle, radius;
+      if (mousedown.y === loc.y) {
+        radius = Math.abs(loc.x - mousedown.x);
+      } else {
+        angle = Math.atan(rubberbandRect.height / rubberbandRect.width);
+        radius = rubberbandRect.height / Math.sin(angle);
+      }
+      context.beginPath();
+      context.arc(mousedown.x, mousedown.y, radius, 0, Math.PI * 2, false);
+      context.stroke();
+    }
+    canvas.onmousemove = (e) => {
+      let loc = windowToCanvas(e.clientX, e.clientY);
+      drawRubberbandShape(loc);
+      updateRubberbandRectangle(loc);
+    };
+    canvas.onmouseup = (e) => {
+      let loc = windowToCanvas(e.clientX, e.clientY);
+      updateRubberbandRectangle(loc);
+    };
+    canvas.onmousedown = (e) => {
+      e.preventDefault();
+      mousedown = {
+        x: e.clientX,
+        y: e.clientY,
+      };
+    };
+  </script>
+</html>

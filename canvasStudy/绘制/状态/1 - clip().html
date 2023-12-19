@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=, user-scalable=, initial-scale=, maximum-scale=, minimum-scale=" />
+  <meta http-equiv="X-UA-Compatible" content="ie=" />
+  <title></title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    canvas {
+      display: block;
+      background-color: #eee;
+      margin: 40px auto 10px;
+    }
+
+    p {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" height="800" width="800"></canvas>
+  <p>
+    <button id="clip">使用clip</button>
+    <button id="no_clip">不使用clip</button>
+    <button id="strokeRect">使用strokeRect剪切</button>
+    <button id="rect">使用rect剪切</button>
+    <button id="restore">还原</button>
+  </p>
+</body>
+<script>
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+
+  const $ = (id) => document.getElementById(id) || "";
+
+  $("clip").onclick = () => {
+    ctx.beginPath();
+    ctx.arc(50, 50, 40, 0, Math.PI * 2, true);
+    ctx.closePath();
+    ctx.strokeStyle = "HotPink";
+    ctx.stroke();
+
+    ctx.clip();
+
+    ctx.beginPath();
+    ctx.fillStyle = "#6cf";
+    ctx.fillRect(50, 50, 100, 80);
+  };
+
+  $("no_clip").onclick = () => {
+    ctx.beginPath();
+    ctx.arc(50, 50, 40, 0, Math.PI * 2, true);
+    ctx.closePath();
+    ctx.strokeStyle = "HotPink";
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.fillStyle = "#6cf";
+    ctx.fillRect(50, 50, 100, 80);
+  };
+</script>
+
+</html>

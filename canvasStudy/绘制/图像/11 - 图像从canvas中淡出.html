@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="fadeButton">测试</button>
+    <canvas id="canvas" width="800" height="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    const image = new Image();
+    const fadeButton = document.getElementById("fadeButton");
+
+    let originalImageData = null;
+    let interval = null;
+
+    function increaseTransparency(imageData, steps) {
+      let alpha;
+      let currentAlpha;
+      let step;
+      let length = imageData.data.length;
+
+      for (let i = 3; i < length; i += 4) {
+        alpha = originalImageData.data[i];
+
+        if (alpha > 0 && imageData.data[i] > 0) {
+          currentAlpha = imageData.data[i];
+          step = Math.ceil(alpha / steps);
+          if (currentAlpha - step > 0) {
+            imageData.data[i] -= step;
+          } else {
+            imageData.data[i] = 0;
+          }
+        }
+      }
+    }
+
+    function fadeOut(context, imageData, x, y, steps, millisecondsPerStep) {
+      let frame = 0;
+      let length = imageData.data.length;
+
+      let interval = setInterval(() => {
+        frame++;
+        if (frame > steps) {
+          clearInterval(interval);
+          animationComplete();
+        } else {
+          increaseTransparency(imageData, steps);
+          context.putImageData(imageData, x, y);
+        }
+      }, millisecondsPerStep);
+    }
+
+    function animationComplete() {
+      setTimeout(function () {
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      }, 1000);
+    }
+
+    fadeButton.onclick = () => {
+      fadeOut(
+        context,
+        context.getImageData(0, 0, canvas.width, canvas.height),
+        0,
+        0,
+        20,
+        1000 / 60
+      );
+    };
+
+    image.src = "./../../images/bg.webp";
+    image.onload = () => {
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      originalImageData = context.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+    };
+  </script>
+</html>

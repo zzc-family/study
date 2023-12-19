@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=, user-scalable=, initial-scale=, maximum-scale=, minimum-scale="
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=" />
+    <title></title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      canvas {
+        background-color: #eee;
+        display: block;
+        margin: 40px auto 0;
+      }
+      button {
+        display: block;
+        margin: 0 auto;
+      }
+      p {
+        text-align: center;
+        font-size: 20px;
+      }
+      .box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+      }
+      .num1 {
+        border: 1px solid #eee;
+        border-top: none;
+        border-bottom: none;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" height="300" width="300"></canvas>
+    <button id="translate">移动</button>
+    <button id="scale">缩放</button>
+    <button id="rotate">旋转</button>
+    <button id="restore">还原</button>
+
+    <p>transform(a, b, c, d, e, f)</p>
+    <p>
+      <img
+        src="https://www.twle.cn/static/i/canvas/canvas_basic_geometric_transform_9.gif?1"
+        alt=""
+      />
+    </p>
+    <p>a 水平缩放 b 水平倾斜 c 垂直倾斜 d 垂直缩放 e 水平移动 f 垂直移动</p>
+  </body>
+  <script>
+    <!-- transform(a, b, c, d, e, f)   -->
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const $ = (id) => document.getElementById(id) || "";
+
+    ctx.fillStyle = "HotPink";
+    ctx.fillRect(30, 30, 50, 50);
+    $("translate").onclick = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.transform(1, 0, 0, 1, 10, 10);
+      ctx.fillStyle = "HotPink";
+      ctx.fillRect(30, 30, 50, 50);
+    };
+    /*
+     *
+     *   开始坐标：(x, y)
+     *   旋转后的坐标: (x1, y1)
+     *   x轴缩放的倍速：a
+     *   y轴缩放的倍速：b
+     *   公示：
+     *       x1 = x * a
+     *       y1 = y * b
+     * */
+    $("scale").onclick = () => {
+      ctx.transform(1.5, 0, 0, 1.5, 0, 0);
+      ctx.fillStyle = "#96f";
+      ctx.fillRect(30, 30, 50, 50);
+    };
+    /*
+     *
+     *   开始坐标：(x, y)
+     *   旋转后的坐标: (x1, y1)
+     *   旋转角度：angle
+     *   公示：
+     *       x1 = x * Math.cos(angle) - y * Math.sin(angle)
+     *       y1 = x * Math.sin(angle) + y * Math.cos(angle)
+     * */
+    $("rotate").onclick = () => {
+      // 逆时针旋转30
+      let angle = -30 * (Math.PI / 180);
+      ctx.rotate(angle);
+      // ctx.transform(
+      //   Math.cos(angle),
+      //   Math.sin(angle),
+      //   -Math.sin(angle),
+      //   Math.cos(angle),
+      //   0,
+      //   0
+      // );
+      ctx.fillStyle = "LightSkyBlue";
+      ctx.fillRect(30, 30, 50, 50);
+    };
+    $("restore").onclick = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "HotPink";
+      ctx.fillRect(30, 30, 50, 50);
+    };
+  </script>
+</html>

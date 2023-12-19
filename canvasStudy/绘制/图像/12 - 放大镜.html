@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>放大镜</title>
+    <style>
+      body {
+      }
+      canvas {
+        background-color: #eee;
+      }
+
+      #box {
+        padding: 20px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: row;
+      }
+      .circle {
+        width: 12px;
+        height: 12px;
+        border-radius: 100%;
+        border: 2px solid #333;
+        display: block;
+      }
+      label {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box">
+      <label for="scale">
+        <input
+          oninput="handleChange()"
+          id="scale"
+          min="0"
+          max="300"
+          type="range"
+          value="0"
+        />
+        <span id="text">0</span>
+      </label>
+      &emsp;&emsp;
+      <label for="scale2">
+        <span class="circle"></span>&nbsp;
+        <input
+          type="range"
+          id="scale2"
+          min="0"
+          max="300"
+          value="0"
+          oninput="handleChange(1)"
+        />
+        <span id="text2">0</span>
+      </label>
+    </div>
+
+    <canvas id="canvas" width="800" height="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    const image = new Image();
+    let RADIUS = 100;
+    let mouseDown = {
+      x: 0,
+      y: 0,
+    };
+    let dragging = false;
+    image.src = "./../../images/bg.webp";
+
+    const $ = function (id) {
+      return document.getElementById(id);
+    };
+
+    const handleChange = (e) => {
+      if (e) {
+        return ($("text2").innerHTML = $("scale2").value / 100);
+      }
+      $("text").innerText = $("scale").value / 100;
+    };
+
+    const startRender = () => {
+      context.drawImage(image, 0, 0);
+      context.save();
+    };
+
+    function windowToCanvas(x, y) {
+      let bbox = canvas.getBoundingClientRect();
+      return {
+        x: x - bbox.left * (canvas.width / bbox.width),
+        y: y - bbox.top * (canvas.height / bbox.height),
+      };
+    }
+
+    const drawCircle = (x, y) => {
+      context.beginPath();
+      context.save();
+
+      context.arc(x, y, RADIUS, 0, Math.PI * 2, false);
+      context.stroke();
+      context.restore();
+    };
+
+    image.onload = () => {
+      startRender();
+    };
+
+    canvas.onmousemove = (e) => {
+      const { x, y } = windowToCanvas(e.clientX, e.clientY);
+      mouseDown = { x, y };
+      drawCircle(x, y);
+    };
+  </script>
+</html>

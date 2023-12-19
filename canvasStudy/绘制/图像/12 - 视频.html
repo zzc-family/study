@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <video id="video" poster="./../../images/bg.webp">
+      <source
+        type="video/mp4"
+        src="https://bjetxgzv.cdn.bspapp.com/VKCEYUGU-uni-app-doc/a876efc0-4f35-11eb-97b7-0dc4655d6e68.mp4"
+      />
+      <source
+        type="video/ogg"
+        src="https://bjetxgzv.cdn.bspapp.com/VKCEYUGU-uni-app-doc/a876efc0-4f35-11eb-97b7-0dc4655d6e68.ogg"
+      />
+    </video>
+    <canvas id="canvas" width="700" height="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    const video = document.getElementById("video");
+
+    function animate() {
+      if (!video.ended) {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        window.requestAnimationFrame(animate);
+      }
+    }
+
+    canvas.onmousedown = () => {
+      video.play();
+      console.log(1);
+      window.requestAnimationFrame(animate);
+    };
+  </script>
+</html>

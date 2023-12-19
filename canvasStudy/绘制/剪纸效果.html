@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" height="800" width="800"></canvas>
+    <canvas id="canvas2" height="800" width="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    function drawTwoArcs() {
+      context.beginPath();
+      context.arc(300, 190, 150, 0, Math.PI * 2, false);
+      context.arc(300, 190, 100, 0, Math.PI * 2, true);
+      // context.arc(300, 190, 50, 0, Math.PI * 2, true);
+      context.fill();
+      context.shadowColor = undefined;
+      context.shadowOffsetX = 0;
+      context.shadowOffsetY = 0;
+      context.stroke();
+    }
+
+    function draw() {
+      context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+      context.save();
+      context.shadowColor = "rgba(0, 0, 0, .8)";
+      context.shadowOffsetX = 12;
+      context.shadowOffsetY = 12;
+      context.shadowBlur = 15;
+      context.stroke();
+      drawTwoArcs();
+      context.restore();
+    }
+    context.fillStyle = "rgba(100, 140, 230, .5)";
+    context.strokeStyle = context.fillStyle;
+    draw();
+
+    // 剪纸效果2
+    const canvas2 = document.getElementById("canvas2");
+    const context2 = canvas2.getContext("2d");
+    function draw2() {
+      context2.clearRect(0, 0, canvas2.width, canvas2.height);
+      context2.save();
+      context2.shadowColor = "rgba(200, 200, 0, 0.5)";
+      context2.shadowOffsetX = 12;
+      context2.shadowOffsetY = 12;
+      context2.shadowBlur = 15;
+
+      drawCutouts();
+      strokeCutoutShapes();
+      context2.restore();
+    }
+    function drawCutouts() {
+      context2.beginPath();
+      addOuterRectanglePath();
+
+      addCirclePath();
+      addRectanglePath();
+      addTrianglePath();
+      context2.fill();
+    }
+    function strokeCutoutShapes() {
+      context2.save();
+      context2.strokeStyle = "rgba(0, 0,0, .7)";
+      context2.beginPath();
+      addOuterRectanglePath();
+      context2.stroke();
+      context2.beginPath();
+      addCirclePath();
+      addRectanglePath();
+      addTrianglePath();
+      context2.stroke();
+      context2.restore();
+    }
+    function rect(x, y, w, h, direction) {
+      if (direction) {
+        context2.moveTo(x, y);
+        context2.lineTo(x, y + h);
+        context2.lineTo(x + w, y + h);
+        context2.lineTo(x + w, y);
+        context2.closePath();
+      } else {
+        context2.moveTo(x, y);
+        context2.lineTo(x + w, y);
+        context2.lineTo(x + w, y + h);
+        context2.lineTo(x, y + h);
+        context2.closePath();
+      }
+    }
+    function addOuterRectanglePath() {
+      context2.rect(110, 25, 370, 335);
+    }
+    function addCirclePath() {
+      context2.arc(300, 300, 40, 0, Math.PI * 2, true);
+    }
+    function addRectanglePath() {
+      rect(310, 55, 70, 35, true);
+    }
+    function addTrianglePath() {
+      context2.moveTo(400, 200);
+      context2.lineTo(250, 115);
+      context2.lineTo(200, 200);
+      context2.closePath();
+    }
+    context2.fillStyle = "goldenrod";
+    draw2();
+  </script>
+</html>

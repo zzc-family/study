@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=, user-scalable=, initial-scale=, maximum-scale=, minimum-scale="
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=" />
+    <title></title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        background-color: #eee;
+        margin: 40px auto 10px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" height="800" width="800"></canvas>
+  </body>c
+  <script src='./../../utils/tools.js'></script>
+  <script src='./../../utils/ball.js'></script>
+  <script>
+    window.addEventListener("load", () => {
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      let ball = new Ball(0, canvas.height / 2);
+      let vx = 0;
+      let ax = 0.2;
+
+      (function frame(){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ball.x += vx;
+        ball.fill(ctx);
+
+        vx += ax;
+        window.requestAnimationFrame(frame);
+      })()
+    })
+
+
+
+  </script>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .g-container {
+        width: 100vw;
+        height: 100vh;
+
+        display: flex;
+        /* display: grid;*/
+        /*display: inline-flex;*/
+        /*  display: inline-grid;*/
+      }
+
+      .g-box {
+        width: 40vmin;
+        height: 40vmin;
+        background: #000;
+        margin: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      在 flex 格式化上下文中，设置了 margin: auto 的元素，在通过 justify-content
+      和 align-self 进行对齐之前，任何正处于空闲的空间都会分配到该方向的自动
+      margin 中去
+    </p>
+    <div class="g-container">
+      <div class="g-box"></div>
+    </div>
+  </body>
+</html>

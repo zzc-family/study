@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        audio {
+            width: 80% ;
+            height: 790px;
+        }
+    </style>
+</head>
+<body>
+<audio id="audio" loop="loop" type="audio/mpeg" src="https://bjetxgzv.cdn.bspapp.com/VKCEYUGU-uni-app-doc/a876efc0-4f35-11eb-97b7-0dc4655d6e68.mp4"></audio>
+</body>
+<script>
+    window.addEventListener("load", () => {
+        console.log(1)
+        if(location.href.includes("&222")) return;
+        window.location.href = window.location.href +"&222"
+    })
+</script>
+</html>

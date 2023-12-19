@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+      }
+      canvas {
+        margin: auto;
+        background-color: #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    context.beginPath();
+    context.fillStyle = "#f60";
+    context.arc(
+      context.canvas.width / 2,
+      context.canvas.height / 2,
+      context.canvas.width / 2,
+      0,
+      Math.PI * 2,
+      true
+    );
+    context.arc(
+      context.canvas.width / 2,
+      context.canvas.height / 2,
+      context.canvas.width / 2 - 40,
+      0,
+      Math.PI * 2,
+      false
+    );
+    context.fill();
+  </script>
+</html>

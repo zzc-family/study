@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        width: 100vw;
+        height: 100vh;
+      }
+      canvas {
+        background-color: #000;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+<!--    <canvas id="canvas"></canvas>-->
+    <iframe src="http://sdkadmin.ujuec.com" />
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    const ballNum = 60;
+    let w = (canvas.width = canvas.offsetWidth);
+    let h = (canvas.height = canvas.offsetHeight);
+    let ballArr = [];
+
+    window.requestAnimationFrame =
+      window.requestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.msRequestAnimationFrame;
+
+    const r = function (num) {
+      return Math.floor(Math.random() * num);
+    };
+
+    class Ball {
+      constructor() {
+        this.x = r(context.canvas.width);
+        this.y = r(context.canvas.height);
+        this.r = r(10) + 2;
+        this.color = `rgb(${r(255)}, ${r(255)}, ${r(255)})`;
+        this.offsetX = r(2) + 0.5;
+        this.offsetY = r(3) + 0.5;
+      }
+      drawCircle() {
+        context.beginPath();
+        context.fillStyle = this.color || "#f00";
+        context.arc(this.x, this.y, this.r, 0, Math.PI * 2, true);
+        context.fill();
+        context.closePath();
+      }
+      drawLine(endX, endY, panduan) {
+        let dx = Math.abs(this.x - endX);
+        let dy = Math.abs(this.y - endY);
+        let d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 150) {
+          context.save();
+          context.beginPath();
+          context.moveTo(this.x, this.y);
+
+          if (panduan) {
+            context.lineWidth = 4;
+          }
+          context.lineTo(endX, endY);
+          context.strokeStyle = this.color;
+          context.stroke();
+          context.closePath();
+          context.restore();
+        }
+      }
+    }
+    class CurrentMouse extends Ball {
+      constructor(x, y) {
+        super(x, y);
+      }
+    }
+
+    let mouseData = new CurrentMouse(0, 0);
+    for (let i = 0; i < ballNum; i++) {
+      const ball = new Ball();
+      ballArr.push(ball);
+      draw();
+    }
+
+    function draw() {
+      if (ballArr.length > 0) {
+        context.clearRect(0, 0, w, h);
+        for (let i = 0; i < ballArr.length; i++) {
+          const ball = ballArr[i];
+          if (ball.x >= w || ball.x <= 0) {
+            ball.offsetX = -ball.offsetX;
+          }
+          if (ball.y >= h || ball.y <= 0) {
+            ball.offsetY = -ball.offsetY;
+          }
+          ball.x += ball.offsetX / 24;
+          ball.y += ball.offsetY / 24;
+          ball.drawCircle();
+
+          if (mouseData.x) {
+            mouseData.drawCircle();
+            mouseData.drawLine(ball.x, ball.y, true);
+          }
+          for (let j = i + 1; j < ballArr.length; j++) {
+            ballArr[j].drawLine(ball.x, ball.y, false);
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+
+    window.onmousemove = (e) => {
+      mouseData.x = e.clientX;
+      mouseData.y = e.clientY;
+    };
+    window.onmouseout = () => {
+      mouseData.x = null;
+      mouseData.y = null;
+    };
+  </script>
+</html>

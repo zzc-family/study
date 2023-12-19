@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .bgc {
+        background: -webkit-linear-gradient(
+          top,
+          rgb(203, 235, 219) 0%,
+          rgb(55, 148, 192) 120%
+        );
+        background: -moz-linear-gradient(
+          top,
+          rgb(203, 235, 219) 0%,
+          rgb(55, 148, 192) 120%
+        );
+        background: -o-linear-gradient(
+          top,
+          rgb(203, 235, 219) 0%,
+          rgb(55, 148, 192) 120%
+        );
+        background: -ms-linear-gradient(
+          top,
+          rgb(203, 235, 219) 0%,
+          rgb(55, 148, 192) 120%
+        );
+        background: linear-gradient(
+          top,
+          rgb(203, 235, 219) 0%,
+          rgb(55, 148, 192) 120%
+        );
+      }
+      body {
+        width: 100vw;
+        height: 100vh;
+      }
+      canvas {
+        display: block;
+      }
+      input {
+        position: fixed;
+        bottom: 24px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        z-index: 9;
+        width: 30%;
+        height: 30px;
+        border: none;
+        outline: none;
+        border-bottom: 2px solid #ccc;
+        text-align: center;
+        font-size: 30px;
+        line-height: 30px;
+        background-color: transparent;
+      }
+    </style>
+  </head>
+  <body class="bgc">
+    <canvas id="canvas" width="600" height="600"></canvas>
+    <input
+      onchange="changeInput()"
+      autofocus
+      type="text"
+      placeholder="请输入变换的文字"
+    />
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    canvas.width = document.getElementsByTagName("body")[0].offsetWidth;
+    canvas.height = document.getElementsByTagName("body")[0].offsetHeight;
+    const w = canvas.width;
+    const h = canvas.height;
+    const timer = 100;
+    const leap = 14;
+    window.requestFrame =
+      window.requestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.msRequestAnimationFrame;
+    function changeInput(e) {
+      alert(e.target.value);
+    }
+    function drawText(text, x, y, color = "#f60", w) {
+      context.save();
+      context.beginPath();
+      context.font = "500px 微软雅黑";
+      context.textAlign = "center";
+      context.textBaseline = "middle";
+      context.fillStyle = color;
+      context.fillText(text, x, y, w);
+      context.fill();
+
+      context.closePath();
+      context.restore();
+    }
+    function drawCircle(x, y, r, color) {
+      context.save();
+      context.beginPath();
+      context.arc(x, y, r, 0, Math.PI * 2, true);
+      context.fillStyle = color || "green";
+      context.fill();
+      context.restore();
+    }
+    function r(num) {
+      return Math.floor(Math.random() * num);
+    }
+    class Ball {
+      constructor(endX, endY) {
+        this.x = r(w);
+        this.y = r(h);
+        // `rgba(${r(255)}, ${r(255)}, ${r(255)})`
+        this.color = "#fff";
+        this.r = 6;
+        this.endX = endX;
+        this.endY = endY;
+        this.moveX = this.x;
+        this.moveY = this.y;
+        this.offsetX = (this.endX - this.x) / timer;
+        this.offsetY = (this.endY - this.y) / timer;
+      }
+      drawCircle() {
+        context.save();
+        context.beginPath();
+        context.arc(this.moveX, this.moveY, this.r, 0, Math.PI * 2, true);
+        context.fillStyle = this.color;
+        context.fill();
+        context.restore();
+      }
+    }
+
+    const renderText = () => {
+      context.clearRect(0, 0, w, h);
+      const text =
+        document.getElementsByTagName("input")[0].value || "你好啊 ❤️";
+      drawText(text, w / 2, h / 2, "", w);
+      const copy = context.getImageData(0, 0, w, h);
+      context.clearRect(0, 0, w, h);
+
+      let ballArr = [];
+
+      for (let i = 0; i < h; i += leap) {
+        for (let j = 0; j < w; j += leap) {
+          const index = j + i * w;
+          const a = copy.data[index * 4 + 3];
+          if (a > 128) {
+            // drawCircle(j, i, 3, "#f00");
+            const ball = new Ball(j, i);
+            ballArr.push(ball);
+          }
+        }
+      }
+      let count = 0;
+      let move = function () {
+        context.clearRect(0, 0, w, h);
+        for (let i = 0; i < ballArr.length; i++) {
+          const ball = ballArr[i];
+          ball.moveX += ball.offsetX;
+          ball.moveY += ball.offsetY;
+          ball.drawCircle();
+        }
+
+        count += 1;
+        if (count >= timer) {
+          clearInterval(time);
+        }
+        window.requestAnimationFrame(move);
+      };
+      window.requestAnimationFrame(move);
+    };
+
+    renderText();
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        renderText();
+      }
+    });
+  </script>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      #box {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+      }
+      canvas {
+        margin: auto;
+        background-color: #f5f5f5;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box"><canvas width="600" height="600" id="canvas"></canvas></div>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    let FONT_HEIGHT = 15;
+    let MARGIN = 35;
+    let HAND_TRUNCATION = canvas.width / 25;
+    let HOUR_HAND_TRUNCATION = canvas.width / 10;
+    let NUMERAL_SPACING = 20;
+    let RADIUS = canvas.width / 2 - MARGIN;
+    let HAND_RADIUS = RADIUS + NUMERAL_SPACING;
+
+    function drawCircle() {
+      context.beginPath();
+      context.arc(
+        canvas.width / 2,
+        canvas.height / 2,
+        RADIUS,
+        0,
+        Math.PI * 2,
+        true
+      );
+      context.stroke();
+    }
+    function drawNumerals() {
+      var numerals = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+      var angle = 0;
+      var numeralWidth = 0;
+
+      numerals.forEach((numeral) => {
+        angle = (Math.PI / 6) * (numeral - 3);
+        numeralWidth = context.measureText(numeral).width;
+        context.fillText(
+          numeral,
+          canvas.width / 2 + Math.cos(angle) * HAND_RADIUS - numeralWidth / 2,
+          canvas.height / 2 + Math.sin(angle) * HAND_RADIUS + FONT_HEIGHT / 3
+        );
+      });
+    }
+    function drawCenter() {
+      context.beginPath();
+      context.arc(canvas.width / 2, canvas.height / 2, 5, 0, Math.PI * 2, true);
+      context.fill();
+    }
+    function drawHand(loc, isHour) {
+      let angle = Math.PI * 2 * (loc / 60) - Math.PI / 2;
+      let handRadius = isHour
+        ? RADIUS - HAND_TRUNCATION - HOUR_HAND_TRUNCATION
+        : RADIUS - HAND_TRUNCATION;
+      context.moveTo(canvas.width / 2, canvas.height / 2);
+      context.lineTo(
+        canvas.width / 2 + Math.cos(angle) * handRadius,
+        canvas.height / 2 + Math.sin(angle) * handRadius
+      );
+      context.stroke();
+    }
+    function drawHands() {
+      let date = new Date();
+      let hour = date.getHours();
+      hour = hour > 12 ? hour - 12 : hour;
+      drawHand(hour * 5 + (date.getMinutes() / 60) * 5, true, 0.5);
+      drawHand(date.getMinutes(), false, 0.5);
+      drawHand(date.getSeconds(), false, 0.2);
+    }
+    function drawClock() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      drawCircle();
+      drawCenter();
+      drawHands();
+      drawNumerals();
+    }
+    context.font = FONT_HEIGHT + "px Arial";
+    loop = setInterval(drawClock, 1000);
+  </script>
+</html>

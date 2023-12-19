@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      canvas {
+        background-color: #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    function drawDashedLine(x1, y1, x2, y2, dashLength) {
+      dashLength = dashLength === undefined ? 5 : dashLength;
+
+      let deltaX = x2 - x1;
+      let deltaY = y2 - y1;
+      let numDashes = Math.floor(
+        Math.sqrt(deltaX * deltaX + deltaY * deltaY) / dashLength
+      );
+      for (let i = 0; i < numDashes; ++i) {
+        context[i % 2 === 0 ? "moveTo" : "lineTo"](
+          x1 + (deltaX / numDashes) * i,
+          y1 + (deltaY / numDashes) * i
+        );
+        console.log(
+          x1 + (deltaX / numDashes) * i,
+          y1 + (deltaY / numDashes) * i
+        );
+      }
+      context.stroke();
+    }
+    context.lineWidth = 3;
+    context.strokeStyle = "blue";
+    drawDashedLine(0, 0, context.canvas.width, 0);
+    drawDashedLine(
+      context.canvas.width,
+      0,
+      context.canvas.width,
+      context.canvas.height,
+      10
+    );
+    drawDashedLine(
+      0,
+      context.canvas.height,
+      context.canvas.width,
+      context.canvas.height,
+      8
+    );
+    drawDashedLine(0, context.canvas.height, 0, 0, 2);
+  </script>
+</html>

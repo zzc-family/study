@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=, user-scalable=, initial-scale=, maximum-scale=, minimum-scale="
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=" />
+    <title></title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        background-color: #eee;
+        margin: 10px auto 10px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>边界生成：物体完全超出边界后，会在最开始的位置重新生成</h2>
+    <canvas id="canvas" height="800" width="800"></canvas>
+  </body>
+  <script src="./../../utils/tools.js"></script>
+  <script src="./../../utils/ball.js"></script>
+  <script>
+    window.addEventListener("load", () => {
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      let balls = [];
+      // 小球数量
+      let n = 50;
+
+      // 生成n个小球 其中小球的color,vx,vy都是随机值
+      for (let i = 0; i < n; i++) {
+        // 球心坐标为Canvas中心 color为随机颜色值
+        let ball = new Ball(
+          canvas.width / 2,
+          canvas.height / 2,
+          5,
+          tools.getRandomColor()
+        );
+
+        // ball.vx和ball.vy取值都是-1到1的任意数
+        ball.vx = Math.random() * 2 - 1;
+        ball.vy = Math.random() * 2 - 1;
+
+        // 添加到数组balls中
+        balls.push(ball);
+      }
+
+      (function frame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        balls.forEach((ball) => {
+          // 边界检测 使得小球完全超出画布后会在中心位置重新生成
+          if (
+            ball.x < -ball.radius ||
+            ball.x > canvas.width + ball.radius ||
+            ball.y < -ball.radius ||
+            ball.y > canvas.height + ball.radius
+          ) {
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+            ball.vx = Math.random() * 2 - 1;
+            ball.vy = Math.random() * 2 - 1;
+          }
+          ball.fill(ctx);
+
+          ball.x += ball.vx;
+          ball.y += ball.vy;
+        });
+
+        window.requestAnimationFrame(frame);
+      })();
+    });
+  </script>
+</html>

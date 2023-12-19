@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .g-container {
+        position: relative;
+        height: 100vh;
+        min-width: 400px;
+      }
+      .g-container > div {
+        height: 100vh;
+        float: left;
+        text-align: center;
+        color: #fff;
+        line-height: 100vh;
+        font-size: 3vw;
+      }
+
+      .g-middle {
+        position: relative;
+        width: 100%;
+        background: #cc6630;
+      }
+      .g-middle .g-middle-inner {
+        margin: 0 200px;
+      }
+
+      .g-left {
+        position: relative;
+        width: 200px;
+        background: #ffcc00;
+        margin-left: -100%;
+      }
+
+      .g-right {
+        position: relative;
+        width: 200px;
+        background: pink;
+        margin-left: -200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="g-container">
+      <div class="g-middle">
+        <div class="g-middle-inner">middle-inner</div>
+      </div>
+      <div class="g-left">left</div>
+      <div class="g-right">right</div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <h2>需求</h2>
+    <ul>
+      <li>
+        &emsp;双飞翼布局左中右三列布局，渲染顺序中间列书写在前保证提前渲染，左右两列定宽，中间列自适应剩余宽度。
+      </li>
+      <li>
+        &emsp;双飞翼布局与圣杯布局的不同之处，圣杯布局的的左中右三列容器，中间middle多了一个子容器存在，通过控制
+        middle 的子容器的 margin 或者 padding 空出左右两列的宽度。
+      </li>
+    </ul>
+    <h2>关键点</h2>
+    <ul>
+      <li>
+        双飞翼布局的关键点是通过 margin-left
+        属性将左右两列放置到准确的位置，通过控制 middle 的子容器的 margin 或者
+        padding 空出左右两列的宽度
+      </li>
+      <li>双飞翼布局的关键点父元素不需要设置 padding</li>
+      <li>
+        双飞翼布局的关键点 margin-left
+        取值为百分比时，是以其父元素的宽度为基准的
+      </li>
+    </ul>
+    <br />
+    <br />
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      canvas {
+        background-color: #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" height="800" width="1200"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    function roundedRect(cornerX, cornerY, width, height, cornerRadius) {
+      if (width > 0) {
+        context.moveTo(cornerX + cornerRadius, cornerY);
+      } else {
+        context.arcTo(
+          cornerX + width,
+          cornerY,
+          cornerX + width,
+          cornerY + height,
+          cornerRadius
+        );
+        context.arcTo(
+          cornerX + width,
+          cornerY + height,
+          cornerX,
+          cornerY + height,
+          cornerRadius
+        );
+        context.arcTo(
+          cornerX,
+          cornerY + height,
+          cornerX,
+          cornerY,
+          cornerRadius
+        );
+        if (width > 0) {
+          context.arcTo(
+            cornerX,
+            cornerY,
+            cornerX + cornerRadius,
+            cornerY,
+            cornerRadius
+          );
+        } else {
+          context.arcTo(
+            cornerX,
+            cornerY,
+            cornerX - cornerRadius,
+            cornerY,
+            cornerRadius
+          );
+        }
+      }
+    }
+    function drawRounderRect(
+      strokeStyle,
+      fillStyle,
+      cornerX,
+      cornerY,
+      width,
+      height,
+      cornerRadius
+    ) {
+      context.beginPath();
+      roundedRect(cornerX, cornerY, width, height, cornerRadius);
+      context.strokeStyle = strokeStyle;
+      context.fillStyle = fillStyle;
+      context.stroke();
+      context.fill();
+    }
+
+    drawRounderRect("blue", "yellow", 50, 40, 100, 100, 10);
+    drawRounderRect("purple", "green", 275, 40, -100, 100, 20);
+    drawRounderRect("red", "white", 300, 140, 100, -100, 30);
+    drawRounderRect("white", "blue", 525, 140, -100, -100, 40);
+  </script>
+</html>

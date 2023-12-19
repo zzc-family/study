@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+      body {
+        background-color: #fff;
+        display: flex;
+      }
+      canvas {
+        margin: auto;
+        background-color: #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="300" height="300"></canvas>
+  </body>
+  <script>
+    function $(id) {
+      return document.getElementById(id);
+    }
+    const canvasBox = $("canvas");
+    const context = canvasBox.getContext("2d");
+    context.font = "28px Arial";
+    context.fillStyle = "red";
+    context.strokeStyle = "blue";
+    context.fillText(
+      "Hello Canvas",
+      canvasBox.width / 2 - 150,
+      canvasBox.height / 2 + 15
+    );
+    context.strokeText(
+      "Hello Canvas",
+      canvasBox.width / 2 - 150,
+      canvasBox.height / 2 + 15
+    );
+  </script>
+</html>

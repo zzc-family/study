@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="400"></canvas>
+    <button id="sunglassButton" type="button">综合运用墨镜效果</button>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    const image = new Image();
+
+    const offscreenCanvas = document.getElementById("canvas");
+    const offscreenContext = offscreenCanvas.getContext("2d");
+
+    const sunglassButton = document.getElementById("sunglassButton");
+
+    let sunglassesOn = false;
+    let sunglassFilter = new Worker("./sunglassFilter.js");
+
+    let LENS_RADIUS = canvas.width / 5;
+
+    function drawLenses(leftLensLocation, rightLensLocation) {
+      context.save();
+      context.beginPath();
+      context.arc(
+        leftLensLocation.x,
+        leftLensLocation.y,
+        LENS_RADIUS,
+        0,
+        Math.PI * 2,
+        false
+      );
+      context.stroke();
+
+      moveTo(rightLensLocation.x, rightLensLocation.y);
+      context.arc(
+        rightLensLocation.x,
+        rightLensLocation.y,
+        LENS_RADIUS,
+        0,
+        Math.PI * 2,
+        false
+      );
+      context.stroke();
+      context.clip();
+      context.drawImage(offscreenCanvas, 0, 0, canvas.width, canvas.height);
+      context.restore();
+    }
+
+    function drawWire(center) {
+      context.beginPath();
+      context.moveTo(center.x - LENS_RADIUS / 4, center.y - LENS_RADIUS / 2);
+      context.quadraticCurveTo(
+        center.x,
+        center.y - LENS_RADIUS + 20,
+        center.x + LENS_RADIUS / 4,
+        center.y - LENS_RADIUS / 2
+      );
+      context.stroke();
+    }
+
+    function drawConnectors(center) {
+      context.beginPath();
+      context.fillStyle = "silver";
+      context.strokeStyle = "rgba(0, 0, 0, .4)";
+      context.lineWidth = 2;
+      context.arc(
+        center.x - LENS_RADIUS / 4,
+        center.y - LENS_RADIUS / 2,
+        4,
+        0,
+        Math.PI * 2,
+        false
+      );
+      context.fill();
+      context.stroke();
+
+      context.beginPath();
+      context.arc(
+        center.x + LENS_RADIUS / 4,
+        center.y - LENS_RADIUS / 2,
+        4,
+        0,
+        Math.PI * 2,
+        false
+      );
+      context.fill();
+      context.stroke();
+    }
+
+    function putSunglassesOn() {
+      let imageData;
+      let center = {
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+      };
+      let leftLensLocation = {
+        x: center.x - LENS_RADIUS - 10,
+        y: center.y,
+      };
+      let rightLensLocation = {
+        x: center.x + LENS_RADIUS + 10,
+        y: center.y,
+      };
+      imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+      sunglassFilter.postMessage(imageData);
+
+      sunglassFilter.onmessage = (e) => {
+        offscreenContext.putImageData(e.data, 0, 0);
+        drawLenses(leftLensLocation, rightLensLocation);
+        drawWire(center);
+        drawConnectors(center);
+      };
+    }
+    function drawOriginalImage() {
+      context.drawImage(
+        image,
+        0,
+        0,
+        image.width,
+        image.height,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+    }
+
+    sunglassButton.onclick = () => {
+      if (sunglassesOn) {
+        sunglassButton.innerText = "Sunglasses";
+        drawOriginalImage();
+        sunglassesOn = false;
+      } else {
+        sunglassButton.innerText = "Original picture";
+        putSunglassesOn();
+        sunglassesOn = true;
+      }
+    };
+
+    offscreenCanvas.width = canvas.width;
+    offscreenCanvas.height = canvas.height;
+
+    image.src = "./../../images/bg.webp";
+    image.onload = () => {
+      drawOriginalImage();
+    };
+  </script>
+</html>

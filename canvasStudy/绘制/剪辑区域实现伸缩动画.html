@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    function drawText() {
+      context.save();
+      context.shadowColor = "rgba(100, 100, 150, .8)";
+      context.shadowOffsetX = 5;
+      context.shadowOffsetX = 5;
+      context.shadowBlur = 10;
+
+      context.fillStyle = "cornflowerblue";
+      context.fillText("HTML5", 20, 250);
+      context.strokeStyle = "yellow";
+      context.strokeText("HTML5", 20, 250);
+      context.restore();
+    }
+
+    function setClippingRegion(radius) {
+      context.beginPath();
+      context.arc(
+        canvas.width / 2,
+        canvas.height.height / 2,
+        radius,
+        0,
+        Math.PI * 2,
+        false
+      );
+      context.clip();
+    }
+
+    function fillCanvas(color) {
+      context.fillStyle = color;
+      context.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    function endAnimation(loop) {
+      clearInterval(loop);
+      setTimeout(function (e) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        drawText();
+      }, 1000);
+    }
+
+    function drawAnimationFrame(radius) {
+      setClippingRegion(radius);
+      fillCanvas("lightgray");
+      drawText();
+    }
+
+    function animate() {
+      let radius = canvas.width / 2;
+      let loop = setInterval(() => {
+        radius -= canvas.width / 100;
+        fillCanvas("charcoal");
+        if (radius > 0) {
+          context.save();
+          drawAnimationFrame(radius);
+          context.restore();
+        } else {
+          endAnimation(loop);
+        }
+      }, 16);
+    }
+
+    canvas.onmousedown = (e) => {
+      animate();
+    };
+    context.lineWidth = 0.5;
+    context.font = "128pt Comic-sans";
+    drawText();
+  </script>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      canvas {
+        background-color: #f5f5f5;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="800"></canvas>
+    <canvas id="canvas2" width="800" height="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    let gradient = context.createLinearGradient(0, 0, 0, canvas.height / 2);
+    gradient.addColorStop(0, "blue");
+    gradient.addColorStop(0.25, "white");
+    gradient.addColorStop(0.5, "purple");
+    gradient.addColorStop(0.75, "red");
+    gradient.addColorStop(1, "yellow");
+
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 放射渐变
+    const canvas2 = document.getElementById("canvas2");
+    const context2 = canvas2.getContext("2d");
+    const gradient2 = context2.createRadialGradient(
+      canvas2.width / 2,
+      canvas2.height,
+      140,
+      canvas2.width / 2,
+      0,
+      30
+    );
+    gradient2.addColorStop(0, "blue");
+    gradient2.addColorStop(0.25, "white");
+    gradient2.addColorStop(0.5, "purple");
+    gradient2.addColorStop(0.75, "red");
+    gradient2.addColorStop(1, "yellow");
+
+    context2.fillStyle = gradient2;
+    context2.fillRect(0, 0, canvas2.width, canvas2.height);
+  </script>
+</html>

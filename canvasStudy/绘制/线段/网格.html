@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      canvas {
+        background-color: #f5f5f5;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" height="800" width="800"></canvas>
+  </body>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    context.lineWidth = 0.5;
+    context.strokeStyle = "lightgray";
+
+    for (let i = 0.5, lens = canvas.height; i < lens; i += 10) {
+      context.beginPath();
+      context.moveTo(i, 0);
+      context.lineTo(i, context.canvas.height);
+      context.stroke();
+    }
+    for (let i = 0.5, lens = canvas.width; i < lens; i += 10) {
+      context.beginPath();
+      context.moveTo(0, i);
+      context.lineTo(context.canvas.width, i);
+      context.stroke();
+    }
+  </script>
+</html>

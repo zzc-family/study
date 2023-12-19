@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=, user-scalable=, initial-scale=, maximum-scale=, minimum-scale="
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=" />
+    <title></title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        background-color: #eee;
+        margin: 10px auto 10px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>
+      边界环绕：当物体从一个边界消失后，他就会从对面的边界重新出现，从而形成一种环绕效果
+    </h2>
+    <canvas id="canvas" height="800" width="800"></canvas>
+  </body>
+  <script src="./../../utils/tools.js"></script>
+  <script src="./../../utils/ball.js"></script>
+  <script>
+    window.addEventListener("load", () => {
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      let ball = new Ball(0, canvas.height / 2);
+      let vx = 2;
+
+      (function frame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ball.x += vx;
+        if(ball.x > canvas.width + ball.radius){
+          ball.x = -ball.radius;
+        }
+        ball.fill(ctx);
+
+        window.requestAnimationFrame(frame);
+      })();
+    });
+  </script>
+</html>
