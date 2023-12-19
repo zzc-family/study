@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+				name="viewport">
+	<meta content="ie=edge" http-equiv="X-UA-Compatible">
+	<title>Document</title>
+</head>
+<body>
+<ul contenteditable="true">
+	<li>列表元素1</li>
+	<li>列表元素2</li>
+	<li>列表元素3</li>
+	<li>列表元素4</li>
+</ul>
+
+<textarea cols="30" id="" name="" rows="10" spellcheck="true">
+
+</textarea>
+
+<hr />
+文件与拖放
+
+<input id="file" name="" type="file" />
+<input onclick="handleClick()" type="button" value="显示文件信息" />
+<p id="size"></p>
+<p id="type"></p>
+</body>
+<script>
+	const $ = (id) => document.getElementById(id);
+	const handleClick = () => {
+		let file = $("file").files[0];
+		const size = $("size");
+		size.innerText = file.size;
+		const type = $("type");
+		type.innerText = file.type;
+	};
+
+</script>
+</html>

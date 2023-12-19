@@ -11,24 +11,29 @@ class Stack {
     push(element) {
         this.items.push(element);
     }
+
     // 移除栈顶的元素 同时返回被移除的元素
-    pop(){
+    pop() {
         return this.items.pop();
     }
+
     // 如果栈里没有元素返回true 否者 false
-    isEmpty(){
+    isEmpty() {
         return this.size() === 0;
     }
-    size(){
+
+    size() {
         return this.items.length;
     }
+
     // 清空栈里所有的元素
-    clear(){
+    clear() {
         this.items = [];
     }
+
     // 返回栈顶的元素 不对栈做任何修改（该方法不会移除栈底的元素 仅仅返回他）
-    peek(){
-        if(this.size() > 0) return this.items[this.items.length - 1];
+    peek() {
+        if (this.size() > 0) return this.items[this.items.length - 1];
         return undefined;
     }
 }
@@ -40,38 +45,45 @@ class StackObj {
         this.count = 0;
         this.items = {};
     }
-    push(element){
+
+    push(element) {
         this.count++;
         this.items[this.count] = element;
     }
+
     // 移除栈顶的元素 同时返回被移除的元素
-    pop(){
-        if(this.isEmpty()) return undefined;
-        this.count--;
+    pop() {
+        if (this.isEmpty()) return undefined;
         const result = this.items[this.count];
         delete this.items[this.count];
+        this.count--;
         return result;
     }
+
     // 如果栈里没有元素返回true 否者 false
-    isEmpty(){
+    isEmpty() {
         return this.size() === 0;
     }
-    size(){
+
+    size() {
         return this.count;
     }
+
     // 清空栈里所有的元素
-    clear(){
+    clear() {
         this.count = 0;
         this.items = {};
     }
+
     // 返回栈顶的元素 不对栈做任何修改（该方法不会移除栈底的元素 仅仅返回他）
-    peek(){
-       if(this.isEmpty()) return undefined;
-       return this.items[this.count - 1];
+    peek() {
+        if (this.isEmpty()) return undefined;
+        return this.items[this.count - 1];
     }
-    toString(){
+
+    toString() {
         let result = "";
-        for(let i = 1; i <= this.count; i++){
+        for (let i = 1; i <= this.count; i++) {
             result = result ? result + `,${this.items[i]}` : this.items[i];
         }
         return result;
